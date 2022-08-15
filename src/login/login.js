@@ -1,11 +1,14 @@
 import * as S from './loginStyles';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import UserContext from '../context';
 
 export default function Login(){
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
+    const { setToken } = React.useContext(UserContext);
+    const navigate = useNavigate();
     
     function sendObject(){
         if(email !== '' && password !== ''){
@@ -14,7 +17,10 @@ export default function Login(){
                 password: password
             }
             let promisse = axios.post("http://localhost:5000/login", obj);
-            promisse.then(() => {console.log("deu bom")})
+            promisse.then((response) => {
+                setToken(response.data);
+                navigate("/recipes")
+            })
             promisse.catch(e => {
                 if(e.response.status === 422){
                     alert("preencha os dados corretamente");
