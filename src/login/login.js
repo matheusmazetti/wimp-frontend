@@ -19,7 +19,7 @@ export default function Login(){
             let promisse = axios.post("http://localhost:5000/login", obj);
             promisse.then((response) => {
                 setToken(response.data);
-                navigate("/recipes")
+                navigate("/recipes");
             })
             promisse.catch(e => {
                 if(e.response.status === 422){
